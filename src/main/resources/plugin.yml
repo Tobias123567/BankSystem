@@ -1,0 +1,20 @@
+name: ${project.artifactId}
+main: de.tobi.bank.BankSystem
+version: ${project.version}
+api-version: 1.20
+author: Tobias123567
+depend:
+  - floodgate
+  - MoneyApi
+  - LanguageApi
+  - DatabaseApi
+  - InventoryManagementApi
+  - PlayerCache
+commands:
+  bank:
+    description: Open the bank
+    permission: banksystem.bank
+    usage: "§cUsage: §e/bank"
+permissions:
+  banksystem.bank:
+    default: true
