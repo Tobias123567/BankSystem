@@ -10,6 +10,8 @@ depend:
   - DatabaseApi
   - InventoryManagementApi
   - PlayerCache
+softdepend:
+  - TutorialSystem
 commands:
   bank:
     description: Open the bank

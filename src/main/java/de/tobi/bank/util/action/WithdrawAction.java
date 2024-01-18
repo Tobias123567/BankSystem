@@ -6,6 +6,7 @@ import de.tobi.api.inventories.util.templates.JavaAndBedrockInputAction;
 import de.tobi.api.languagesystem.LanguageApi;
 import de.tobi.api.money.MoneyApi;
 import de.tobi.bank.BankSystem;
+import de.tobi.bank.tutorial.BankTutorial;
 import de.tobi.bank.util.Account;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -99,6 +100,13 @@ public class WithdrawAction implements JavaAndBedrockInputAction {
         }
         MoneyApi.addCurrency(player, this.account.currency(), amount);
         player.sendMessage(LanguageApi.getMessage(player.getName(), "grieferprime.banksystem.account.withdraw.success").replace("%amount", String.valueOf(amount)));
+
+        if (BankSystem.TUTORIAL_ENABLED) {
+            BankTutorial tutorial = BankTutorial.getCurrentModule(player);
+            if (tutorial != null && tutorial.getStep() == 3) {
+                BankTutorial.finishModule(player);
+            }
+        }
     }
 
     @Override

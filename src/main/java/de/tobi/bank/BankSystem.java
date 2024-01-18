@@ -2,10 +2,12 @@ package de.tobi.bank;
 
 import de.tobi.api.money.util.Currency;
 import de.tobi.bank.commands.BankCommand;
+import de.tobi.bank.tutorial.BankTutorial;
 import de.tobi.bank.util.Account;
 import de.tobi.databases.DatabaseApi;
 import de.tobi.databases.database.ConnectionPool;
 import de.tobi.databases.util.ConnectionInformation;
+import de.tobi.tutorialsystem.TutorialSystem;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -22,6 +24,8 @@ import java.util.concurrent.CompletableFuture;
 
 public class BankSystem extends JavaPlugin {
 
+    public static boolean TUTORIAL_ENABLED;
+
     private static BankSystem instance;
 
     public static BankSystem getInstance() {
@@ -33,6 +37,7 @@ public class BankSystem extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+        TUTORIAL_ENABLED = this.getServer().getPluginManager().isPluginEnabled("TutorialSystem");
         this.saveDefaultConfig();
         Configuration configuration = this.getConfig();
 
@@ -41,6 +46,10 @@ public class BankSystem extends JavaPlugin {
         this.connectionPool.executeUpdate("CREATE TABLE IF NOT EXISTS bank_access(id INT NOT NULL, uuid UUID NOT NULL, PRIMARY KEY(id, uuid), FOREIGN KEY (id) REFERENCES bank(id) ON DELETE CASCADE)");
 
         this.getCommand("bank").setExecutor(new BankCommand());
+
+        if (TUTORIAL_ENABLED) {
+            TutorialSystem.registerModule(BankTutorial.class);
+        }
     }
 
     @NotNull

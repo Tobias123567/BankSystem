@@ -8,6 +8,7 @@ import de.tobi.api.inventories.util.ItemBuilder;
 import de.tobi.api.languagesystem.LanguageApi;
 import de.tobi.api.money.util.Currency;
 import de.tobi.bank.BankSystem;
+import de.tobi.bank.tutorial.BankTutorial;
 import de.tobi.bank.util.action.BankAction;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -43,6 +44,12 @@ public class CreateAccountAction implements InventoryAction, BedrockUIAction<Cus
         String name = customFormResponse.asInput(1);
 
         BankSystem.getInstance().createAccount(player.getUniqueId(), name, currency);
+        if (BankSystem.TUTORIAL_ENABLED) {
+            BankTutorial tutorial = BankTutorial.getCurrentModule(player);
+            if (tutorial != null && tutorial.getStep() == 1) {
+                tutorial.executeNextStep();
+            }
+        }
         return new BankAction();
     }
 
@@ -90,6 +97,12 @@ public class CreateAccountAction implements InventoryAction, BedrockUIAction<Cus
         }
 
         BankSystem.getInstance().createAccount(player.getUniqueId(), LanguageApi.getMessage(player.getName(), "grieferprime.banksystem.new_account"), currency);
+        if (BankSystem.TUTORIAL_ENABLED) {
+            BankTutorial tutorial = BankTutorial.getCurrentModule(player);
+            if (tutorial != null && tutorial.getStep() == 1) {
+                tutorial.executeNextStep();
+            }
+        }
         return new BankAction();
     }
 
